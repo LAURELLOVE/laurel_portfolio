@@ -267,7 +267,9 @@
   .work-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
   @media (max-width:900px){ .work-grid{ grid-template-columns:repeat(2,1fr); } }
   @media (max-width:640px){ .work-grid{ grid-template-columns:1fr; } }
-  .work-card{ display:none; flex-direction:column; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; background:var(--surface); }
+  .work-card{ display:none; flex-direction:column; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; background:var(--surface); text-decoration:none; color:inherit; transition:border-color .15s ease, transform .15s ease; }
+  a.work-card:hover{ border-color:var(--line-strong); transform:translateY(-2px); }
+  .work-cat .live{ color:var(--accent); }
   .work-card.show{ display:flex; }
   .thumb{ aspect-ratio:4/3; position:relative; overflow:hidden; border-bottom:1px solid var(--line); }
   .thumb span.mark{
@@ -581,7 +583,7 @@
           <div class="eyebrow">§ 03</div>
           <h2>Selected work</h2>
         </div>
-        <p class="sec-note">Sample placeholders — swap these six for real project shots and case-study links once you publish.</p>
+        <p class="sec-note">Self-directed demo projects for fictional brands, built to show range across all three services — click any card to open the live build.</p>
       </div>
 
       <div class="filter-row" role="tablist">
@@ -592,30 +594,30 @@
       </div>
 
       <div class="work-grid" id="workGrid">
-        <div class="work-card show" data-cat="dev">
+        <a class="work-card show" data-cat="dev" href="https://laurellove.github.io/E-commerce-storefront-rebuild/" target="_blank" rel="noopener">
           <div class="thumb dev"><span class="mark">01</span></div>
-          <div class="work-body"><div class="work-cat">Development</div><h4>[E-commerce storefront rebuild]</h4><p>Headless build on [stack], cart + checkout, 40% faster load time.</p></div>
-        </div>
-        <div class="work-card show" data-cat="design">
+          <div class="work-body"><div class="work-cat">Development · <span class="live">live demo ↗</span></div><h4>E-commerce storefront rebuild</h4><p>Headless product grid with an instant, no-reload cart drawer — for a fictional homeware brand, Meridian Goods.</p></div>
+        </a>
+        <a class="work-card show" data-cat="design" href="https://laurellove.github.io/Brand-identity-system/" target="_blank" rel="noopener">
           <div class="thumb design"><span class="mark">02</span></div>
-          <div class="work-body"><div class="work-cat">Design</div><h4>[Brand identity system]</h4><p>Logo, color and type system delivered as a full brand guide.</p></div>
-        </div>
-        <div class="work-card show" data-cat="translate">
+          <div class="work-body"><div class="work-cat">Design · <span class="live">live demo ↗</span></div><h4>Brand identity system</h4><p>Logo, palette, type, and starter applications — a full guide for a fictional roastery, Solstice Coffee Co.</p></div>
+        </a>
+        <a class="work-card show" data-cat="translate" href="https://laurellove.github.io/SaaS-UI-localization-EN-FR/" target="_blank" rel="noopener">
           <div class="thumb translate"><span class="mark">03</span></div>
-          <div class="work-body"><div class="work-cat">Translation</div><h4>[SaaS UI localization — EN → FR]</h4><p>800 UI strings localized and QA'd inside the live product.</p></div>
-        </div>
-        <div class="work-card show" data-cat="dev">
+          <div class="work-body"><div class="work-cat">Translation · <span class="live">live demo ↗</span></div><h4>SaaS UI localization — EN → FR</h4><p>A working dashboard with a live EN/FR toggle, driven by a reusable string dictionary.</p></div>
+        </a>
+        <a class="work-card show" data-cat="dev" href="https://laurellove.github.io/Bookingweb-app/" target="_blank" rel="noopener">
           <div class="thumb dev"><span class="mark">04</span></div>
-          <div class="work-body"><div class="work-cat">Development</div><h4>[Booking web app]</h4><p>Custom scheduling app with calendar sync and API integration.</p></div>
-        </div>
-        <div class="work-card show" data-cat="design">
+          <div class="work-body"><div class="work-cat">Development · <span class="live">live demo ↗</span></div><h4>Booking web app</h4><p>End-to-end booking flow — pick a day, pick a slot, confirm — for a fictional studio, Fernwood Studio.</p></div>
+        </a>
+        <a class="work-card show" data-cat="design" href="https://laurellove.github.io/Pitchdeck-redesign/" target="_blank" rel="noopener">
           <div class="thumb design"><span class="mark">05</span></div>
-          <div class="work-body"><div class="work-cat">Design</div><h4>[Pitch deck redesign]</h4><p>22-slide investor deck rebuilt for a seed-stage startup.</p></div>
-        </div>
-        <div class="work-card show" data-cat="translate">
+          <div class="work-body"><div class="work-cat">Design · <span class="live">live demo ↗</span></div><h4>Pitch deck redesign</h4><p>A text-heavy draft cut down to 9 navigable, investor-ready slides for a fictional startup, Arbor.</p></div>
+        </a>
+        <a class="work-card show" data-cat="translate" href="https://laurellove.github.io/Legalcontract-translation-FR-EN/" target="_blank" rel="noopener">
           <div class="thumb translate"><span class="mark">06</span></div>
-          <div class="work-body"><div class="work-cat">Translation</div><h4>[Legal contract translation — FR ⇄ EN]</h4><p>12-page service agreement, certified-ready formatting.</p></div>
-        </div>
+          <div class="work-body"><div class="work-cat">Translation · <span class="live">live demo ↗</span></div><h4>Legal contract translation — FR ⇄ EN</h4><p>A clause-by-clause service-agreement excerpt, translated and formatted side by side with a terminology glossary.</p></div>
+        </a>
       </div>
     </div>
   </section>
