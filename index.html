@@ -1,0 +1,759 @@
+<title>Polyglot Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F2EFE6;
+    --surface:#FBFAF5;
+    --surface-2:#EAE5D7;
+    --ink:#1C2430;
+    --ink-soft:#5A6270;
+    --accent:#B96A21;
+    --accent-soft:#E9C79A;
+    --teal:#3D6F65;
+    --teal-soft:#CFE0DA;
+    --line:#DAD3C0;
+    --line-strong:#C7BEA6;
+    --shadow: 0 1px 2px rgba(28,36,48,.06), 0 8px 24px -12px rgba(28,36,48,.14);
+    --radius: 3px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#14181C;
+      --surface:#1B2126;
+      --surface-2:#232A30;
+      --ink:#ECE8DD;
+      --ink-soft:#9CA3AC;
+      --accent:#E3A15A;
+      --accent-soft:#4A3A24;
+      --teal:#6FB0A2;
+      --teal-soft:#233A36;
+      --line:#2B3238;
+      --line-strong:#3A424A;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 28px -14px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#14181C;
+    --surface:#1B2126;
+    --surface-2:#232A30;
+    --ink:#ECE8DD;
+    --ink-soft:#9CA3AC;
+    --accent:#E3A15A;
+    --accent-soft:#4A3A24;
+    --teal:#6FB0A2;
+    --teal-soft:#233A36;
+    --line:#2B3238;
+    --line-strong:#3A424A;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 28px -14px rgba(0,0,0,.6);
+  }
+
+  *{box-sizing:border-box;}
+  html{background:var(--bg);}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:"Fraunces", ui-serif, Georgia, serif;
+    font-weight:500;
+    margin:0;
+    text-wrap:balance;
+    color:var(--ink);
+  }
+  p{margin:0;}
+  a{color:inherit;}
+  img{max-width:100%;}
+  ::selection{background:var(--accent-soft); color:var(--ink);}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+
+  .wrap{max-width:1120px; margin:0 auto; padding:0 28px;}
+  @media (max-width:640px){ .wrap{padding:0 20px;} }
+
+  .mono{font-family:"IBM Plex Mono", ui-monospace, monospace;}
+  .eyebrow{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:.72rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--teal);
+    display:flex;
+    align-items:center;
+    gap:.6em;
+  }
+  .eyebrow::before{
+    content:"";
+    width:14px; height:1px;
+    background:var(--teal);
+    display:inline-block;
+  }
+
+  /* ---------- Nav ---------- */
+  header.site{
+    position:sticky; top:0; z-index:40;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 0;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:"Fraunces", serif; font-style:italic; font-weight:500;
+    font-size:1.15rem;
+  }
+  .brand-mark{
+    width:26px; height:26px; flex:none;
+  }
+  .navlinks{ display:flex; gap:28px; font-size:.9rem; }
+  .navlinks a{ text-decoration:none; color:var(--ink-soft); }
+  .navlinks a:hover{ color:var(--ink); }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:10px 18px;
+    border-radius:var(--radius);
+    font-size:.88rem; font-weight:500;
+    text-decoration:none;
+    border:1px solid var(--line-strong);
+    white-space:nowrap;
+  }
+  .btn-primary{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+  .btn-accent{ background:var(--accent); color:#fff; border-color:var(--accent); }
+  .btn-ghost{ background:transparent; color:var(--ink); }
+  .btn svg{ width:14px; height:14px; }
+  @media (max-width:800px){ .navlinks{display:none;} }
+
+  /* ---------- Hero ---------- */
+  .hero{ padding:76px 0 56px; border-bottom:1px solid var(--line); }
+  .hero-top{ display:flex; justify-content:space-between; gap:40px; flex-wrap:wrap; }
+  .hero h1{
+    font-size:clamp(2.4rem, 5vw, 3.7rem);
+    line-height:1.08;
+    letter-spacing:-.01em;
+    max-width:16ch;
+  }
+  .hero h1 em{ color:var(--accent); font-style:italic; }
+  .hero-sub{
+    max-width:46ch;
+    color:var(--ink-soft);
+    font-size:1.05rem;
+    margin-top:18px;
+  }
+  .hero-actions{ display:flex; gap:12px; margin-top:30px; flex-wrap:wrap; }
+  .stat-row{
+    display:grid; grid-template-columns:repeat(4,1fr);
+    gap:1px; background:var(--line);
+    border:1px solid var(--line);
+    margin-top:52px;
+  }
+  .stat{
+    background:var(--surface); padding:18px 20px;
+  }
+  .stat b{
+    display:block; font-family:"IBM Plex Mono",monospace;
+    font-size:1.5rem; font-weight:500;
+    font-variant-numeric:tabular-nums;
+  }
+  .stat span{ font-size:.78rem; color:var(--ink-soft); }
+  @media (max-width:700px){ .stat-row{ grid-template-columns:repeat(2,1fr);} }
+
+  /* ---------- Section frame ---------- */
+  section{ padding:72px 0; border-bottom:1px solid var(--line); }
+  .sec-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    gap:24px; margin-bottom:40px; flex-wrap:wrap;
+  }
+  .sec-head h2{ font-size:clamp(1.7rem,3vw,2.3rem); margin-top:10px; }
+  .sec-note{ max-width:36ch; color:var(--ink-soft); font-size:.92rem; text-align:right; }
+  @media (max-width:700px){ .sec-note{text-align:left;} }
+
+  /* ---------- Fluencies (services) ---------- */
+  .triptych{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+  .fl-card{ background:var(--surface); padding:32px 28px; display:flex; flex-direction:column; gap:16px; }
+  .fl-icon{ width:34px; height:34px; color:var(--accent); }
+  .fl-card h3{ font-size:1.3rem; }
+  .fl-card p{ color:var(--ink-soft); font-size:.94rem; }
+  .tag-row{ display:flex; flex-wrap:wrap; gap:6px; margin-top:auto; padding-top:8px; }
+  .tag{
+    font-family:"IBM Plex Mono",monospace; font-size:.72rem;
+    padding:4px 8px; border:1px solid var(--line-strong); border-radius:var(--radius);
+    color:var(--ink-soft);
+  }
+  @media (max-width:800px){ .triptych{grid-template-columns:1fr;} }
+
+  /* ---------- Pricing ---------- */
+  .tabs{ display:flex; gap:8px; margin-bottom:32px; flex-wrap:wrap; }
+  .tab-btn{
+    font-family:"IBM Plex Mono",monospace; font-size:.8rem;
+    padding:9px 16px; border-radius:999px; border:1px solid var(--line-strong);
+    background:transparent; color:var(--ink-soft); cursor:pointer;
+  }
+  .tab-btn[aria-selected="true"]{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+  .price-grid{ display:none; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .price-grid.active{ display:grid; }
+  @media (max-width:800px){ .price-grid.active{ grid-template-columns:1fr; } }
+  .price-card{
+    border:1px solid var(--line); border-radius:var(--radius); background:var(--surface);
+    padding:26px 24px; display:flex; flex-direction:column; gap:14px;
+  }
+  .price-card.featured{ border-color:var(--accent); box-shadow:var(--shadow); position:relative; }
+  .price-card.featured::before{
+    content:"Most booked"; position:absolute; top:-11px; left:24px;
+    background:var(--accent); color:#fff; font-family:"IBM Plex Mono",monospace;
+    font-size:.68rem; letter-spacing:.06em; padding:3px 9px; border-radius:999px;
+  }
+  .price-tier{ font-family:"IBM Plex Mono",monospace; font-size:.78rem; color:var(--teal); text-transform:uppercase; letter-spacing:.08em; }
+  .price-amount{ font-family:"Fraunces",serif; font-size:2rem; }
+  .price-amount span{ font-size:.9rem; color:var(--ink-soft); font-family:"IBM Plex Sans",sans-serif; }
+  .price-meta{ font-size:.82rem; color:var(--ink-soft); display:flex; gap:14px; }
+  .price-feats{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; font-size:.88rem; }
+  .price-feats li{ display:flex; gap:8px; }
+  .price-feats svg{ width:15px; height:15px; flex:none; margin-top:3px; color:var(--teal); }
+  .price-card .btn{ margin-top:auto; justify-content:center; }
+
+  /* ---------- Work ---------- */
+  .filter-row{ display:flex; gap:8px; margin-bottom:28px; flex-wrap:wrap; }
+  .work-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  @media (max-width:900px){ .work-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:640px){ .work-grid{ grid-template-columns:1fr; } }
+  .work-card{ display:none; flex-direction:column; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; background:var(--surface); }
+  .work-card.show{ display:flex; }
+  .thumb{ aspect-ratio:4/3; position:relative; overflow:hidden; border-bottom:1px solid var(--line); }
+  .thumb span.mark{
+    position:absolute; right:12px; bottom:10px; font-family:"IBM Plex Mono",monospace;
+    font-size:.68rem; letter-spacing:.05em; color:rgba(255,255,255,.85);
+  }
+  .thumb.dev{ background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 1px, transparent 1px 26px),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 1px, transparent 1px 26px),
+      linear-gradient(160deg,#22303A,#13181C); }
+  .thumb.dev::before{ content:"</>"; position:absolute; left:16px; top:16px; font-family:"IBM Plex Mono",monospace; color:var(--teal-soft); font-size:1.1rem; }
+  .thumb.design{ background:linear-gradient(135deg,var(--accent) 0 30%, #E9C79A 30% 55%, var(--teal) 55% 78%, #CFE0DA 78% 100%); }
+  .thumb.translate{ background:
+      repeating-linear-gradient(0deg, rgba(28,36,48,.07) 0 1px, transparent 1px 22px),
+      #EFE9D8; }
+  .thumb.translate::before{ content:"EN ⇄ FR"; position:absolute; left:16px; top:16px; font-family:"IBM Plex Mono",monospace; color:#7a6b4a; font-size:.85rem; }
+  .work-body{ padding:18px 20px; display:flex; flex-direction:column; gap:8px; }
+  .work-body h4{ font-size:1.02rem; }
+  .work-body p{ font-size:.86rem; color:var(--ink-soft); }
+  .work-cat{ font-family:"IBM Plex Mono",monospace; font-size:.7rem; color:var(--teal); text-transform:uppercase; letter-spacing:.06em; }
+
+  /* ---------- Process ---------- */
+  .process-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+  @media (max-width:800px){ .process-row{ grid-template-columns:repeat(2,1fr); } }
+  .proc-step{ border-top:2px solid var(--line-strong); padding-top:16px; }
+  .proc-num{ font-family:"IBM Plex Mono",monospace; color:var(--accent); font-size:.85rem; }
+  .proc-step h4{ margin-top:8px; font-size:1.05rem; }
+  .proc-step p{ margin-top:6px; font-size:.87rem; color:var(--ink-soft); }
+
+  /* ---------- Languages & Tools ---------- */
+  .lt-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; }
+  @media (max-width:800px){ .lt-grid{ grid-template-columns:1fr; gap:40px; } }
+  .lang-row{ display:flex; justify-content:space-between; align-items:center; padding:13px 0; border-bottom:1px solid var(--line); }
+  .lang-row .pair{ font-family:"IBM Plex Mono",monospace; font-size:.92rem; }
+  .lang-row .level{ font-size:.78rem; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em; }
+  .toolkit-group{ margin-bottom:22px; }
+  .toolkit-group h5{ font-family:"IBM Plex Mono",monospace; font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--teal); margin-bottom:10px; }
+  .toolkit-tags{ display:flex; flex-wrap:wrap; gap:7px; }
+
+  /* ---------- Trust stats ---------- */
+  .trust-band{ background:var(--surface-2); border-bottom:1px solid var(--line); }
+  .trust-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+  .trust-tile{ background:var(--surface); padding:26px 22px; text-align:center; }
+  .trust-tile b{ display:block; font-family:"Fraunces",serif; font-size:2.2rem; font-variant-numeric:tabular-nums; }
+  .trust-tile span{ font-size:.78rem; color:var(--ink-soft); }
+  @media (max-width:700px){ .trust-grid{ grid-template-columns:repeat(2,1fr); } }
+
+  /* ---------- Testimonials ---------- */
+  .quote-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  @media (max-width:800px){ .quote-grid{ grid-template-columns:1fr; } }
+  .quote-card{ border:1px solid var(--line); border-radius:var(--radius); padding:26px 22px; background:var(--surface); display:flex; flex-direction:column; gap:14px; }
+  .stars{ display:flex; gap:3px; color:var(--accent); }
+  .stars svg{ width:14px; height:14px; }
+  .quote-card p.q{ font-family:"Fraunces",serif; font-style:italic; font-size:1.05rem; line-height:1.5; color:var(--ink); }
+  .quote-who{ font-family:"IBM Plex Mono",monospace; font-size:.76rem; color:var(--ink-soft); }
+
+  /* ---------- FAQ ---------- */
+  .faq-list{ border-top:1px solid var(--line); }
+  details{ border-bottom:1px solid var(--line); padding:18px 0; }
+  summary{ cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center; font-family:"Fraunces",serif; font-size:1.08rem; }
+  summary::-webkit-details-marker{ display:none; }
+  summary .plus{ font-family:"IBM Plex Mono",monospace; color:var(--accent); font-size:1.1rem; transition:transform .15s ease; }
+  details[open] summary .plus{ transform:rotate(45deg); }
+  details p{ margin-top:12px; color:var(--ink-soft); font-size:.92rem; max-width:62ch; }
+
+  /* ---------- Footer CTA ---------- */
+  footer{ padding:76px 0 40px; }
+  .cta-block{ text-align:center; max-width:44ch; margin:0 auto 44px; }
+  .cta-block h2{ font-size:clamp(1.8rem,4vw,2.6rem); }
+  .cta-block p{ color:var(--ink-soft); margin-top:14px; }
+  .cta-actions{ display:flex; justify-content:center; gap:12px; margin-top:26px; flex-wrap:wrap; }
+  .foot-bottom{ display:flex; justify-content:space-between; align-items:center; padding-top:32px; border-top:1px solid var(--line); font-size:.82rem; color:var(--ink-soft); flex-wrap:wrap; gap:12px; }
+  .foot-links{ display:flex; gap:18px; }
+  .foot-links a{ text-decoration:none; }
+  .foot-links a:hover{ color:var(--ink); }
+
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+</style>
+
+<header class="site">
+  <div class="wrap">
+    <nav>
+      <a href="#top" class="brand">
+        <svg class="brand-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 10 L2 16 L6 22" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M26 10 L30 16 L26 22" stroke="var(--teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="16" cy="16" r="4.2" stroke="var(--ink)" stroke-width="2"/>
+        </svg>
+        Tambe Egbe Laura
+      </a>
+      <div class="navlinks">
+        <a href="#fluencies">Fluencies</a>
+        <a href="#work">Work</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#process">Process</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <a class="btn btn-primary" href="#contact">Start a project</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" style="border-bottom:1px solid var(--line);">
+    <div class="wrap">
+      <div class="eyebrow">Development · Design · Translation</div>
+      <div class="hero-top">
+        <h1>Fluent in code,<br>in visuals, and<br>in <em>two languages</em>.</h1>
+        <p class="hero-sub">
+          I'm a multidisciplinary freelancer who builds websites, designs the brand around them, and translates the words that go on them — so clients hire one person who already speaks all three, instead of three vendors who don't talk to each other.
+        </p>
+      </div>
+      <div class="hero-actions">
+        <a class="btn btn-accent" href="https://www.fiverr.com" target="_blank" rel="noopener">
+          Hire me on Fiverr
+          <svg viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H5M12 4V11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="https://www.upwork.com" target="_blank" rel="noopener">
+          Hire me on Upwork
+          <svg viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H5M12 4V11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat"><b>2.88/5</b><span>average rating</span></div>
+        <div class="stat"><b>[250]+</b><span>orders completed</span></div>
+        <div class="stat"><b>[98]%</b><span>on-time delivery</span></div>
+        <div class="stat"><b>&lt;[1]hr</b><span>avg. response time</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLUENCIES / SERVICES -->
+  <section id="fluencies">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">§ 01</div>
+          <h2>Three fluencies, one collaborator</h2>
+        </div>
+        <p class="sec-note">Each service stands alone, or bundle two or three — briefs move faster when the same person builds it, designs it, and writes it.</p>
+      </div>
+
+      <div class="triptych">
+        <div class="fl-card">
+          <svg class="fl-icon" viewBox="0 0 24 24" fill="none"><path d="M8 6L2 12L8 18M16 6L22 12L16 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h3>Development</h3>
+          <p>Front-end builds, custom web apps, WordPress/Webflow/Shopify sites, API integrations, performance and bug fixes.</p>
+          <div class="tag-row">
+            <span class="tag">HTML/CSS/JS</span><span class="tag">React</span><span class="tag">Node</span><span class="tag">WordPress</span><span class="tag">Webflow</span>
+          </div>
+        </div>
+        <div class="fl-card">
+          <svg class="fl-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="1.6"/><rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="1.6"/><rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="1.6"/></svg>
+          <h3>Graphics &amp; Web Design</h3>
+          <p>Brand identity and logo systems, UI/UX for web and app, social media kits, pitch decks, print collateral.</p>
+          <div class="tag-row">
+            <span class="tag">Figma</span><span class="tag">Illustrator</span><span class="tag">Photoshop</span><span class="tag">Canva Pro</span>
+          </div>
+        </div>
+        <div class="fl-card">
+          <svg class="fl-icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M3 12H21M12 3C14.5 5.7 15.8 8.8 15.8 12C15.8 15.2 14.5 18.3 12 21C9.5 18.3 8.2 15.2 8.2 12C8.2 8.8 9.5 5.7 12 3Z" stroke="currentColor" stroke-width="1.6"/></svg>
+          <h3>Translation</h3>
+          <p>Document, marketing and UX copy translation, localization, proofreading and transcreation across language pairs.</p>
+          <div class="tag-row">
+            <span class="tag">English ⇄ French</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">§ 02</div>
+          <h2>Packages</h2>
+        </div>
+        <p class="sec-note">Priced the way Fiverr and Upwork clients expect to see it — pick a lane, see scope and delivery time up front.</p>
+      </div>
+
+      <div class="tabs" role="tablist">
+        <button class="tab-btn" role="tab" aria-selected="true" data-target="price-dev">Development</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-target="price-design">Design</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-target="price-translate">Translation</button>
+      </div>
+
+      <div class="price-grid active" id="price-dev">
+        <div class="price-card">
+          <div class="price-tier">Basic</div>
+          <div class="price-amount">$[120] <span>/ page</span></div>
+          <div class="price-meta"><span>[3] days</span><span>[1] revision</span></div>
+          <ul class="price-feats">
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Single responsive page</li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Source files included</li>
+          </ul>
+          <a class="btn btn-ghost" href="#contact">Select Basic</a>
+        </div>
+        <div class="price-card featured">
+          <div class="price-tier">Standard</div>
+          <div class="price-amount">$[450] <span>/ site</span></div>
+          <div class="price-meta"><span>[7] days</span><span>[3] revisions</span></div>
+          <ul class="price-feats">
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Up to [5] pages</li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>CMS setup</li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Basic SEO setup</li>
+          </ul>
+          <a class="btn btn-accent" href="#contact">Select Standard</a>
+        </div>
+        <div class="price-card">
+          <div class="price-tier">Premium</div>
+          <div class="price-amount">$[1200] <span>/ app</span></div>
+          <div class="price-meta"><span>[14] days</span><span>Unlimited</span></div>
+          <ul class="price-feats">
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Custom web app</li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>API integrations</li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>[30]-day support window</li>
+          </ul>
+          <a class="btn btn-ghost" href="#contact">Select Premium</a>
+        </div>
+      </div>
+
+      <div class="price-grid" id="price-design">
+        <div class="price-card">
+          <div class="price-tier">Basic</div>
+          <div class="price-amount">$[45] <span>/ logo</span></div>
+          <div class="price-meta"><span>[2] days</span><span>[2] revisions</span></div>
+          <ul class="price-feats">
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>1 concept, vector files</li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>PNG + SVG export</li>
+          </ul>
+          <a class="btn btn-ghost" href="#contact">Select Basic</a>
+        </div>
+        <div class="price-card featured">
+          <div class="price-tier">Standard</div>
+          <div class="price-amount">$[180] <span>/ identity</span></div>
+          <div class="price-meta"><span>[5] days</span><span>[4] revisions</span></div>
+          <ul class="price-feats">
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Logo + color + type system</li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Brand guide PDF</li>
+          </ul>
+          <a class="btn btn-accent" href="#contact">Select Standard</a>
+        </div>
+        <div class="price-card">
+          <div class="price-tier">Premium</div>
+          <div class="price-amount">$[420] <span>/ kit</span></div>
+          <div class="price-meta"><span>[10] days</span><span>Unlimited</span></div>
+          <ul class="price-feats">
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Full identity + social kit</li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Web-ready UI mockups</li>
+          </ul>
+          <a class="btn btn-ghost" href="#contact">Select Premium</a>
+        </div>
+      </div>
+
+      <div class="price-grid" id="price-translate">
+        <div class="price-card">
+          <div class="price-tier">Basic</div>
+          <div class="price-amount">$[0.05] <span>/ word</span></div>
+          <div class="price-meta"><span>[1] day</span><span>[1] revision</span></div>
+          <ul class="price-feats">
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Up to [500] words</li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Native-level proofread</li>
+          </ul>
+          <a class="btn btn-ghost" href="#contact">Select Basic</a>
+        </div>
+        <div class="price-card featured">
+          <div class="price-tier">Standard</div>
+          <div class="price-amount">$[0.07] <span>/ word</span></div>
+          <div class="price-meta"><span>[3] days</span><span>[3] revisions</span></div>
+          <ul class="price-feats">
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Up to [3000] words</li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Tone &amp; localization pass</li>
+          </ul>
+          <a class="btn btn-accent" href="#contact">Select Standard</a>
+        </div>
+        <div class="price-card">
+          <div class="price-tier">Premium</div>
+          <div class="price-amount">$[0.10] <span>/ word</span></div>
+          <div class="price-meta"><span>[5] days</span><span>Unlimited</span></div>
+          <ul class="price-feats">
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Full-site or UX transcreation</li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Certified-ready formatting</li>
+          </ul>
+          <a class="btn btn-ghost" href="#contact">Select Premium</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">§ 03</div>
+          <h2>Selected work</h2>
+        </div>
+        <p class="sec-note">Sample placeholders — swap these six for real project shots and case-study links once you publish.</p>
+      </div>
+
+      <div class="filter-row" role="tablist">
+        <button class="tab-btn" role="tab" aria-selected="true" data-filter="all">All</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-filter="dev">Development</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-filter="design">Design</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-filter="translate">Translation</button>
+      </div>
+
+      <div class="work-grid" id="workGrid">
+        <div class="work-card show" data-cat="dev">
+          <div class="thumb dev"><span class="mark">01</span></div>
+          <div class="work-body"><div class="work-cat">Development</div><h4>[E-commerce storefront rebuild]</h4><p>Headless build on [stack], cart + checkout, 40% faster load time.</p></div>
+        </div>
+        <div class="work-card show" data-cat="design">
+          <div class="thumb design"><span class="mark">02</span></div>
+          <div class="work-body"><div class="work-cat">Design</div><h4>[Brand identity system]</h4><p>Logo, color and type system delivered as a full brand guide.</p></div>
+        </div>
+        <div class="work-card show" data-cat="translate">
+          <div class="thumb translate"><span class="mark">03</span></div>
+          <div class="work-body"><div class="work-cat">Translation</div><h4>[SaaS UI localization — EN → FR]</h4><p>800 UI strings localized and QA'd inside the live product.</p></div>
+        </div>
+        <div class="work-card show" data-cat="dev">
+          <div class="thumb dev"><span class="mark">04</span></div>
+          <div class="work-body"><div class="work-cat">Development</div><h4>[Booking web app]</h4><p>Custom scheduling app with calendar sync and API integration.</p></div>
+        </div>
+        <div class="work-card show" data-cat="design">
+          <div class="thumb design"><span class="mark">05</span></div>
+          <div class="work-body"><div class="work-cat">Design</div><h4>[Pitch deck redesign]</h4><p>22-slide investor deck rebuilt for a seed-stage startup.</p></div>
+        </div>
+        <div class="work-card show" data-cat="translate">
+          <div class="thumb translate"><span class="mark">06</span></div>
+          <div class="work-body"><div class="work-cat">Translation</div><h4>[Legal contract translation — FR ⇄ EN]</h4><p>12-page service agreement, certified-ready formatting.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">§ 04</div>
+          <h2>How a project runs</h2>
+        </div>
+        <p class="sec-note">Same four stages regardless of which fluency you book — so timelines stay predictable.</p>
+      </div>
+      <div class="process-row">
+        <div class="proc-step"><div class="proc-num">01 / Brief</div><h4>Scope &amp; goals</h4><p>We nail down deliverables, references, and a delivery date before any work starts.</p></div>
+        <div class="proc-step"><div class="proc-num">02 / Draft</div><h4>First pass</h4><p>Wireframe, concept, or draft translation delivered for your review.</p></div>
+        <div class="proc-step"><div class="proc-num">03 / Refine</div><h4>Revision loop</h4><p>Feedback folded in within the revision count on your package.</p></div>
+        <div class="proc-step"><div class="proc-num">04 / Deliver</div><h4>Handoff</h4><p>Final files, source assets, and a short support window after delivery.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LANGUAGES & TOOLS -->
+  <section id="languages">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">§ 05</div>
+          <h2>Languages &amp; toolkit</h2>
+        </div>
+      </div>
+      <div class="lt-grid">
+        <div>
+          <h5 class="mono" style="font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin-bottom:6px;">Working languages</h5>
+          <div class="lang-row"><span class="pair">English</span><span class="level">[Add level]</span></div>
+          <div class="lang-row"><span class="pair">French</span><span class="level">[Add level]</span></div>
+        </div>
+        <div>
+          <div class="toolkit-group">
+            <h5>Development</h5>
+            <div class="toolkit-tags"><span class="tag">JavaScript</span><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">WordPress</span><span class="tag">Git</span></div>
+          </div>
+          <div class="toolkit-group">
+            <h5>Design</h5>
+            <div class="toolkit-tags"><span class="tag">Figma</span><span class="tag">Adobe Illustrator</span><span class="tag">Photoshop</span></div>
+          </div>
+          <div class="toolkit-group">
+            <h5>Translation</h5>
+            <div class="toolkit-tags"><span class="tag">CAT tools</span><span class="tag">Localization QA</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST STATS -->
+  <section class="trust-band" style="padding:0; border-bottom:1px solid var(--line);">
+    <div class="trust-grid">
+      <div class="trust-tile"><b>2.88</b><span>seller rating</span></div>
+      <div class="trust-tile"><b>[250]+</b><span>orders completed</span></div>
+      <div class="trust-tile"><b>[98]%</b><span>on-time delivery</span></div>
+      <div class="trust-tile"><b>[3]</b><span>disciplines covered</span></div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">§ 06</div>
+          <h2>What clients say</h2>
+        </div>
+        <p class="sec-note">Placeholder quotes — replace with real reviews pulled from your Fiverr and Upwork history.</p>
+      </div>
+      <div class="quote-grid">
+        <div class="quote-card">
+          <div class="stars">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2.2 4.6 5 .6-3.7 3.5.9 5-4.4-2.4L3.6 14.7l.9-5L.8 6.2l5-.6L8 1z"/></svg>
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2.2 4.6 5 .6-3.7 3.5.9 5-4.4-2.4L3.6 14.7l.9-5L.8 6.2l5-.6L8 1z"/></svg>
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2.2 4.6 5 .6-3.7 3.5.9 5-4.4-2.4L3.6 14.7l.9-5L.8 6.2l5-.6L8 1z"/></svg>
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2.2 4.6 5 .6-3.7 3.5.9 5-4.4-2.4L3.6 14.7l.9-5L.8 6.2l5-.6L8 1z"/></svg>
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2.2 4.6 5 .6-3.7 3.5.9 5-4.4-2.4L3.6 14.7l.9-5L.8 6.2l5-.6L8 1z"/></svg>
+          </div>
+          <p class="q">"[Add a client quote about the build quality or turnaround here.]"</p>
+          <div class="quote-who">[Client name] · Fiverr</div>
+        </div>
+        <div class="quote-card">
+          <div class="stars">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2.2 4.6 5 .6-3.7 3.5.9 5-4.4-2.4L3.6 14.7l.9-5L.8 6.2l5-.6L8 1z"/></svg>
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2.2 4.6 5 .6-3.7 3.5.9 5-4.4-2.4L3.6 14.7l.9-5L.8 6.2l5-.6L8 1z"/></svg>
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2.2 4.6 5 .6-3.7 3.5.9 5-4.4-2.4L3.6 14.7l.9-5L.8 6.2l5-.6L8 1z"/></svg>
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2.2 4.6 5 .6-3.7 3.5.9 5-4.4-2.4L3.6 14.7l.9-5L.8 6.2l5-.6L8 1z"/></svg>
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2.2 4.6 5 .6-3.7 3.5.9 5-4.4-2.4L3.6 14.7l.9-5L.8 6.2l5-.6L8 1z"/></svg>
+          </div>
+          <p class="q">"[Add a client quote about the design work or brand delivery here.]"</p>
+          <div class="quote-who">[Client name] · Upwork</div>
+        </div>
+        <div class="quote-card">
+          <div class="stars">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2.2 4.6 5 .6-3.7 3.5.9 5-4.4-2.4L3.6 14.7l.9-5L.8 6.2l5-.6L8 1z"/></svg>
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2.2 4.6 5 .6-3.7 3.5.9 5-4.4-2.4L3.6 14.7l.9-5L.8 6.2l5-.6L8 1z"/></svg>
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2.2 4.6 5 .6-3.7 3.5.9 5-4.4-2.4L3.6 14.7l.9-5L.8 6.2l5-.6L8 1z"/></svg>
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2.2 4.6 5 .6-3.7 3.5.9 5-4.4-2.4L3.6 14.7l.9-5L.8 6.2l5-.6L8 1z"/></svg>
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2.2 4.6 5 .6-3.7 3.5.9 5-4.4-2.4L3.6 14.7l.9-5L.8 6.2l5-.6L8 1z"/></svg>
+          </div>
+          <p class="q">"[Add a client quote about the translation accuracy or speed here.]"</p>
+          <div class="quote-who">[Client name] · Fiverr</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">§ 07</div>
+          <h2>Frequently asked</h2>
+        </div>
+      </div>
+      <div class="faq-list">
+        <details open>
+          <summary>How many revisions are included?<span class="plus">+</span></summary>
+          <p>Every package lists its revision count up front. Basic packages include 1–2 rounds; Standard and Premium include more, detailed in the pricing table above.</p>
+        </details>
+        <details>
+          <summary>What's your typical turnaround?<span class="plus">+</span></summary>
+          <p>Delivery time depends on scope and is shown per package — from [1] day for a small translation to [14] days for a full custom build.</p>
+        </details>
+        <details>
+          <summary>Do you sign NDAs?<span class="plus">+</span></summary>
+          <p>Yes — happy to sign an NDA before you share project details, on either platform or via email.</p>
+        </details>
+        <details>
+          <summary>Can I book development, design, and translation together?<span class="plus">+</span></summary>
+          <p>Yes, and it's usually faster than hiring separately — one brief covers all three, with a bundle rate available on request.</p>
+        </details>
+        <details>
+          <summary>Which platforms can I hire you on?<span class="plus">+</span></summary>
+          <p>Fiverr and Upwork, linked at the top and bottom of this page — or reach out directly using the contact details below.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER / CONTACT -->
+  <footer id="contact">
+    <div class="wrap">
+      <div class="cta-block">
+        <div class="eyebrow" style="justify-content:center;">§ 08</div>
+        <h2 style="margin-top:12px;">Have a brief? Let's get it fluent.</h2>
+        <p>Tell me what needs building, designing, or translating — I'll reply with scope and a delivery date within [1] business day.</p>
+        <div class="cta-actions">
+          <a class="btn btn-accent" href="https://www.fiverr.com" target="_blank" rel="noopener">View gigs on Fiverr</a>
+          <a class="btn btn-ghost" href="https://www.upwork.com" target="_blank" rel="noopener">View profile on Upwork</a>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© 2026 Tambe Egbe Laura. Available for freelance work on Fiverr and Upwork.</span>
+        <div class="foot-links">
+          <a href="mailto:you@example.com">[you@example.com]</a>
+          <a href="#" target="_blank" rel="noopener">[LinkedIn]</a>
+          <a href="#" target="_blank" rel="noopener">[Instagram]</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</main>
+
+<script>
+  // Pricing tabs
+  document.querySelectorAll('#pricing .tabs .tab-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('#pricing .tabs .tab-btn').forEach(b=>b.setAttribute('aria-selected','false'));
+      btn.setAttribute('aria-selected','true');
+      document.querySelectorAll('.price-grid').forEach(g=>g.classList.remove('active'));
+      document.getElementById(btn.dataset.target).classList.add('active');
+    });
+  });
+
+  // Work filter
+  document.querySelectorAll('#work .filter-row .tab-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('#work .filter-row .tab-btn').forEach(b=>b.setAttribute('aria-selected','false'));
+      btn.setAttribute('aria-selected','true');
+      const f = btn.dataset.filter;
+      document.querySelectorAll('.work-card').forEach(card=>{
+        card.classList.toggle('show', f==='all' || card.dataset.cat===f);
+      });
+    });
+  });
+</script>
