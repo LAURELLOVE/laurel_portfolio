@@ -335,6 +335,20 @@
   details[open] summary .plus{ transform:rotate(45deg); }
   details p{ margin-top:12px; color:var(--ink-soft); font-size:.92rem; max-width:62ch; }
 
+  /* ---------- Message me ---------- */
+  .msg-grid{ display:grid; grid-template-columns:1fr 1.2fr; gap:48px; align-items:start; }
+  @media (max-width:800px){ .msg-grid{ grid-template-columns:1fr; gap:28px; } }
+  .msg-info p{ color:var(--ink-soft); margin-top:12px; max-width:40ch; }
+  .msg-info ul{ list-style:none; margin:22px 0 0; padding:0; display:flex; flex-direction:column; gap:10px; font-size:.95rem; }
+  .msg-form{ display:flex; flex-direction:column; gap:14px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:26px 24px; }
+  .msg-form label{ display:flex; flex-direction:column; gap:6px; font-size:.84rem; color:var(--ink-soft); }
+  .msg-form input, .msg-form textarea{ font:inherit; font-size:.95rem; color:var(--ink); background:var(--bg); border:1px solid var(--line-strong); border-radius:var(--radius); padding:10px 12px; }
+  .msg-form textarea{ min-height:130px; resize:vertical; }
+  .msg-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+  .msg-note{ font-size:.8rem; color:var(--ink-soft); min-height:1.2em; }
+  .btn-wa{ background:#1FA855; color:#fff; border-color:#1FA855; cursor:pointer; font-family:inherit; }
+  .btn-mail{ cursor:pointer; font-family:inherit; }
+
   /* ---------- Footer CTA ---------- */
   footer{
     padding:76px 0 40px;
@@ -373,8 +387,9 @@
         <a href="#pricing">Pricing</a>
         <a href="#process">Process</a>
         <a href="#faq">FAQ</a>
+        <a href="#message">Message</a>
       </div>
-      <a class="btn btn-primary" href="#contact">Start a project</a>
+      <a class="btn btn-primary" href="#message">Message me</a>
     </nav>
   </div>
 </header>
@@ -887,6 +902,33 @@
     </div>
   </section>
 
+  <!-- MESSAGE ME -->
+  <section id="message">
+    <div class="wrap">
+      <div class="msg-grid">
+        <div class="msg-info">
+          <div class="eyebrow">Message me</div>
+          <h2 style="margin-top:10px;">Send me a message</h2>
+          <p>Tell me about your project. Pick WhatsApp for the fastest reply, or send it by email.</p>
+          <ul>
+            <li><a href="https://wa.me/237679647659" target="_blank" rel="noopener">WhatsApp: +237 679 647 659</a></li>
+            <li><a href="mailto:tambeegbelaura@gmail.com">Email: tambeegbelaura@gmail.com</a></li>
+          </ul>
+        </div>
+        <form class="msg-form" id="msgForm">
+          <label>Your name<input type="text" name="name" autocomplete="name" required></label>
+          <label>Your email or phone <small>(optional)</small><input type="text" name="contact" autocomplete="email"></label>
+          <label>Your message<textarea name="message" required placeholder="What would you like built or designed?"></textarea></label>
+          <div class="msg-actions">
+            <button type="button" class="btn btn-wa" data-via="wa">Send on WhatsApp</button>
+            <button type="button" class="btn btn-ghost btn-mail" data-via="mail">Send by email</button>
+          </div>
+          <div class="msg-note" id="msgNote" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
   <!-- FOOTER / CONTACT -->
   <footer id="contact">
     <div class="wrap">
@@ -901,9 +943,8 @@
       <div class="foot-bottom">
         <span>© 2026 Tambe Egbe Laura. Available for freelance work on Fiverr.</span>
         <div class="foot-links">
-          <a href="mailto:you@example.com">[you@example.com]</a>
-          <a href="#" target="_blank" rel="noopener">[LinkedIn]</a>
-          <a href="#" target="_blank" rel="noopener">[Instagram]</a>
+          <a href="mailto:tambeegbelaura@gmail.com">tambeegbelaura@gmail.com</a>
+          <a href="https://wa.me/237679647659" target="_blank" rel="noopener">WhatsApp</a>
         </div>
       </div>
     </div>
@@ -932,4 +973,22 @@
       });
     });
   });
+  // Message me
+  (function(){
+    const form=document.getElementById('msgForm'), note=document.getElementById('msgNote');
+    form.querySelectorAll('button[data-via]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        if(!form.reportValidity()) return;
+        const d=new FormData(form), name=d.get('name').trim(), contact=d.get('contact').trim(), msg=d.get('message').trim();
+        const body='Hi Laura, my name is '+name+'.\n\n'+msg+(contact?'\n\nReach me on: '+contact:'');
+        if(btn.dataset.via==='wa'){
+          window.open('https://wa.me/237679647659?text='+encodeURIComponent(body),'_blank','noopener');
+          note.textContent='Opening WhatsApp with your message ready to send.';
+        } else {
+          window.location.href='mailto:tambeegbelaura@gmail.com?subject='+encodeURIComponent('Project enquiry from '+name)+'&body='+encodeURIComponent(body);
+          note.textContent='Opening your email app. If nothing opens, write to tambeegbelaura@gmail.com.';
+        }
+      });
+    });
+  })();
 </script>
